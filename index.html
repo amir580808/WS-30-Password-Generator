@@ -26,7 +26,6 @@
         .result { font-family: Consolas, monospace; font-size: 52px; font-weight: bold; color: #00FFA3; margin: 10px 0; letter-spacing: 2px; }
         .status { font-size: 13px; color: #FFD700; height: 20px; transition: 0.3s;}
         
-        /* استایل مربوط به نام توسعه‌دهنده */
         .dev-credit { font-size: 10px; color: #3A3D42; margin-top: 40px; letter-spacing: 0.5px; }
     </style>
 </head>
@@ -54,56 +53,89 @@
     <div class="result" id="resultDisplay">-----</div>
     <div class="status" id="statusMessage"></div>
     
-    <!-- نمایش نام توسعه‌دهنده به صورت کمرنگ در پایین صفحه -->
     <div class="dev-credit">توسعه دهنده: امیر محمد شیخیان</div>
 </div>
 
 <script>
-    var _0xdf2=["app_login","1396","getItem","\uD83D\uDD12\x20\u0631\u0645\u0632\x20\u0648\u0631\u0648\u062F\x20\u0628\u0647\x20\u0646\u0631\u0645\u200C\u0627\u0641\u0632\u0627\u0631\x20\u0631\u0627\x20\u0648\u0627\u0631\u062F\x20\u06A9\u0646\u06CC\u062F\x3A","setItem","innerHTML","<h3 style='color:white; text-align:center; margin-top:50px;'>❌ دسترسی غیرمجاز</h3>","Unauthorized","persian","latn","en-US-u-ca-persian","year","month","day","1405","1","value","replace","toUpperCase","خطا: طول کور آیدی باید دقیقاً ۲۴ کاراکتر باشد.","substring","خطا: تاریخ نامعتبر است.","innerText","تاریخ محاسبه شده: ","/","✔️ رمز کپی شد!"];
-    let _0x1a=localStorage[_0xdf2[2]](_0xdf2[0]);
-    if(_0x1a!==_0xdf2[1]){
-        let _0x2b=prompt(_0xdf2[3]);
-        if(_0x2b===_0xdf2[1]){localStorage[_0xdf2[4]](_0xdf2[0],_0xdf2[1]);}
-        else{document.body[_0xdf2[5]]=_0xdf2[6];throw new Error(_0xdf2[7]);}
+    // === قفل امنیتی ورود به برنامه ===
+    let appPassword = localStorage.getItem("app_login");
+    if(appPassword !== "1396") { 
+        let input = prompt("🔒 رمز ورود به نرم‌افزار را وارد کنید:");
+        if(input === "1396") {
+            localStorage.setItem("app_login", "1396");
+        } else {
+            document.body.innerHTML = "<h3 style='color:white; text-align:center; margin-top:50px;'>❌ دسترسی غیرمجاز</h3>";
+            throw new Error("Unauthorized"); 
+        }
     }
-    function _0x3c(){
-        try{
-            const _0x4d=new Date(),_0x5e={calendar:_0xdf2[8],numberingSystem:_0xdf2[9]},_0x6f=new Intl.DateTimeFormat(_0xdf2[10],_0x5e),_0x7a=_0x6f.formatToParts(_0x4d);
-            let _0x8b,_0x9c,_0xad;
-            for(let _0xbe of _0x7a){
-                if(_0xbe.type===_0xdf2[11])_0x8b=_0xbe.value;
-                if(_0xbe.type===_0xdf2[12])_0x9c=_0xbe.value;
-                if(_0xbe.type===_0xdf2[13])_0xad=_0xbe.value;
+    // ==================================
+
+    function setPersianDate() {
+        try {
+            const now = new Date();
+            // اضافه شدن پارامترهای عددی برای جلوگیری از خطای متنی شدن ماه‌ها در سافاری
+            const option = { calendar: 'persian', numberingSystem: 'latn', year: 'numeric', month: 'numeric', day: 'numeric' };
+            const formatter = new Intl.DateTimeFormat('en-US-u-ca-persian', option);
+            const parts = formatter.formatToParts(now);
+            let y, m, d;
+            for (let part of parts) {
+                if (part.type === 'year') y = part.value;
+                if (part.type === 'month') m = part.value;
+                if (part.type === 'day') d = part.value;
             }
-            document.getElementById(_0xdf2[11])[_0xdf2[16]]=_0x8b;
-            document.getElementById(_0xdf2[12])[_0xdf2[16]]=_0x9c;
-            document.getElementById(_0xdf2[13])[_0xdf2[16]]=_0xad;
-        }catch(e){
-            document.getElementById(_0xdf2[11])[_0xdf2[16]]=_0xdf2[14];
-            document.getElementById(_0xdf2[12])[_0xdf2[16]]=_0xdf2[15];
-            document.getElementById(_0xdf2[13])[_0xdf2[16]]=_0xdf2[15];
+            document.getElementById('year').value = y;
+            document.getElementById('month').value = m;
+            document.getElementById('day').value = d;
+        } catch (e) {
+            document.getElementById('year').value = "1405";
+            document.getElementById('month').value = "1";
+            document.getElementById('day').value = "1";
         }
     }
-    window.onload=_0x3c;
-    function generatePassword(){
-        let _0x11=document.getElementById('coreId')[_0xdf2[16]][_0xdf2[17]](/[^a-fA-F0-9]/g,'')[_0xdf2[18]]();
-        if(_0x11.length!==24){alert(_0xdf2[19]);return;}
-        let _0x22=parseInt(_0x11[_0xdf2[20]](0,8),16),_0x33=parseInt(_0x11[_0xdf2[20]](8,16),16),_0x44=parseInt(_0x11[_0xdf2[20]](16,24),16);
-        let _0x55=parseInt(document.getElementById(_0xdf2[11])[_0xdf2[16]]),_0x66=parseInt(document.getElementById(_0xdf2[12])[_0xdf2[16]]),_0x77=parseInt(document.getElementById(_0xdf2[13])[_0xdf2[16]]);
-        if(isNaN(_0x55)||isNaN(_0x66)||isNaN(_0x77)){alert(_0xdf2[21]);return;}
-        let _0x88=(1025365513*2),_0x99=[_0x22,_0x33,_0x44,_0x88,_0x55,_0x66,_0x77],_0xaa=(718608870*2);
-        for(let _0xbb=0;_0xbb<_0x99.length;_0xbb++){
-            _0xaa=(_0xaa^_0x99[_0xbb])>>>0;
-            _0xaa=Math.imul(_0xaa,16777619)>>>0;
+
+    window.onload = setPersianDate;
+
+    function generatePassword() {
+        let coreId = document.getElementById('coreId').value.replace(/[^a-fA-F0-9]/g, '').toUpperCase();
+        
+        if (coreId.length !== 24) {
+            alert("خطا: طول کور آیدی باید دقیقاً ۲۴ کاراکتر باشد.");
+            return;
         }
-        let _0xcc=(_0xaa%90000)+10000;
-        document.getElementById('dateDisplay')[_0xdf2[22]]=_0xdf2[23]+_0x55+_0xdf2[24]+_0x66.toString().padStart(2,'0')+_0xdf2[24]+_0x77.toString().padStart(2,'0');
-        document.getElementById('resultDisplay')[_0xdf2[22]]=_0xcc;
-        if(navigator.clipboard){
-            navigator.clipboard.writeText(_0xcc.toString()).then(function(){
-                let _0xdd=document.getElementById('statusMessage');
-                _0xdd[_0xdf2[22]]=_0xdf2[25];
-                setTimeout(()=>{_0xdd[_0xdf2[22]]="";},2500);
+
+        let u0 = parseInt(coreId.substring(0, 8), 16);
+        let u1 = parseInt(coreId.substring(8, 16), 16);
+        let u2 = parseInt(coreId.substring(16, 24), 16);
+
+        let y = parseInt(document.getElementById('year').value);
+        let m = parseInt(document.getElementById('month').value);
+        let d = parseInt(document.getElementById('day').value);
+
+        if (isNaN(y) || isNaN(m) || isNaN(d)) {
+            alert("خطا: تاریخ نامعتبر است.");
+            return;
+        }
+
+        // منطق ریاضی و کلید امنیتی (دقیقاً مشابه پایتون و کدهای میکروکنترلر)
+        let secretKey = 0x7A3B9C12;
+        let data = [u0, u1, u2, secretKey, y, m, d];
+        let hash = 0x55AA33CC;
+
+        for (let i = 0; i < data.length; i++) {
+            hash = (hash ^ data[i]) >>> 0;
+            hash = Math.imul(hash, 0x01000193) >>> 0;
+        }
+
+        let password = (hash % 90000) + 10000;
+
+        document.getElementById('dateDisplay').innerText = `تاریخ محاسبه شده: ${y}/${m.toString().padStart(2, '0')}/${d.toString().padStart(2, '0')}`;
+        document.getElementById('resultDisplay').innerText = password;
+
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(password.toString()).then(function() {
+                let status = document.getElementById('statusMessage');
+                status.innerText = "✔️ رمز کپی شد!";
+                setTimeout(() => { status.innerText = ""; }, 2500);
             });
         }
     }
