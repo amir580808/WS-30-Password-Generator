@@ -53,92 +53,80 @@
     <div class="result" id="resultDisplay">-----</div>
     <div class="status" id="statusMessage"></div>
     
-    <div class="dev-credit">توسعه دهنده: امیر محمد شیخیان</div>
 </div>
 
 <script>
-    // === قفل امنیتی ورود به برنامه ===
-    let appPassword = localStorage.getItem("app_login");
-    if(appPassword !== "1396") { 
-        let input = prompt("🔒 رمز ورود به نرم‌افزار را وارد کنید:");
-        if(input === "1396") {
-            localStorage.setItem("app_login", "1396");
+    // === کدهای امن و مبهم‌سازی شده ===
+    var _0xM = ['app_login', '1396', 'getItem', 'setItem', 'coreId', 'value', 'year', 'month', 'day', 'replace', 'toUpperCase', 'substring', 'dateDisplay', 'resultDisplay', 'statusMessage', 'innerText', 'length', 'getElementById'];
+    
+    var _0xAuth = localStorage[_0xM[2]](_0xM[0]);
+    if(_0xAuth !== _0xM[1]) { 
+        if(prompt("🔒 رمز ورود به نرم‌افزار را وارد کنید:") === _0xM[1]) {
+            localStorage[_0xM[3]](_0xM[0], _0xM[1]);
         } else {
             document.body.innerHTML = "<h3 style='color:white; text-align:center; margin-top:50px;'>❌ دسترسی غیرمجاز</h3>";
-            throw new Error("Unauthorized"); 
+            throw new Error(); 
         }
     }
-    // ==================================
 
-    function setPersianDate() {
+    window['setPersianDate'] = function() {
         try {
-            const now = new Date();
-            // اضافه شدن پارامترهای عددی برای جلوگیری از خطای متنی شدن ماه‌ها در سافاری
-            const option = { calendar: 'persian', numberingSystem: 'latn', year: 'numeric', month: 'numeric', day: 'numeric' };
-            const formatter = new Intl.DateTimeFormat('en-US-u-ca-persian', option);
-            const parts = formatter.formatToParts(now);
-            let y, m, d;
-            for (let part of parts) {
-                if (part.type === 'year') y = part.value;
-                if (part.type === 'month') m = part.value;
-                if (part.type === 'day') d = part.value;
+            var _0xd = new Date();
+            var _0xo = { calendar: 'persian', numberingSystem: 'latn', year: 'numeric', month: 'numeric', day: 'numeric' };
+            var _0xf = new Intl.DateTimeFormat('en-US-u-ca-persian', _0xo).formatToParts(_0xd);
+            var _y, _m, _d2;
+            for (var _i = 0; _i < _0xf[_0xM[16]]; _i++) {
+                if (_0xf[_i].type === _0xM[6]) _y = _0xf[_i][_0xM[5]];
+                if (_0xf[_i].type === _0xM[7]) _m = _0xf[_i][_0xM[5]];
+                if (_0xf[_i].type === _0xM[8]) _d2 = _0xf[_i][_0xM[5]];
             }
-            document.getElementById('year').value = y;
-            document.getElementById('month').value = m;
-            document.getElementById('day').value = d;
+            document[_0xM[17]](_0xM[6])[_0xM[5]] = _y;
+            document[_0xM[17]](_0xM[7])[_0xM[5]] = _m;
+            document[_0xM[17]](_0xM[8])[_0xM[5]] = _d2;
         } catch (e) {
-            document.getElementById('year').value = "1405";
-            document.getElementById('month').value = "1";
-            document.getElementById('day').value = "1";
+            document[_0xM[17]](_0xM[6])[_0xM[5]] = "1405";
+            document[_0xM[17]](_0xM[7])[_0xM[5]] = "1";
+            document[_0xM[17]](_0xM[8])[_0xM[5]] = "1";
         }
-    }
+    };
+    window.onload = window['setPersianDate'];
 
-    window.onload = setPersianDate;
-
-    function generatePassword() {
-        let coreId = document.getElementById('coreId').value.replace(/[^a-fA-F0-9]/g, '').toUpperCase();
+    window['generatePassword'] = function() {
+        var _0xc = document[_0xM[17]](_0xM[4])[_0xM[5]][_0xM[9]](/[^a-fA-F0-9]/g, '')[_0xM[10]]();
+        if(_0xc[_0xM[16]] !== 24) { alert("خطا: طول کور آیدی باید دقیقاً ۲۴ کاراکتر باشد."); return; }
         
-        if (coreId.length !== 24) {
-            alert("خطا: طول کور آیدی باید دقیقاً ۲۴ کاراکتر باشد.");
-            return;
+        var _0xy = parseInt(document[_0xM[17]](_0xM[6])[_0xM[5]]);
+        var _0xm = parseInt(document[_0xM[17]](_0xM[7])[_0xM[5]]);
+        var _0xd = parseInt(document[_0xM[17]](_0xM[8])[_0xM[5]]);
+        if(isNaN(_0xy) || isNaN(_0xm) || isNaN(_0xd)) { alert("خطا: تاریخ نامعتبر است."); return; }
+
+        var _0xArr = [
+            parseInt(_0xc[_0xM[11]](0, 8), 16),
+            parseInt(_0xc[_0xM[11]](8, 16), 16),
+            parseInt(_0xc[_0xM[11]](16, 24), 16),
+            (1025363465 * 2), // Secret Key Obfuscated
+            _0xy, _0xm, _0xd
+        ];
+        
+        var _0xH = (718608870 * 2); // Initial Hash Obfuscated
+        for(var _0xi = 0; _0xi < _0xArr[_0xM[16]]; _0xi++) {
+            _0xH = (_0xH ^ _0xArr[_0xi]) >>> 0;
+            _0xH = Math.imul(_0xH, (16777000 + 619)) >>> 0; // Multiplier Obfuscated
         }
-
-        let u0 = parseInt(coreId.substring(0, 8), 16);
-        let u1 = parseInt(coreId.substring(8, 16), 16);
-        let u2 = parseInt(coreId.substring(16, 24), 16);
-
-        let y = parseInt(document.getElementById('year').value);
-        let m = parseInt(document.getElementById('month').value);
-        let d = parseInt(document.getElementById('day').value);
-
-        if (isNaN(y) || isNaN(m) || isNaN(d)) {
-            alert("خطا: تاریخ نامعتبر است.");
-            return;
-        }
-
-        // منطق ریاضی و کلید امنیتی (دقیقاً مشابه پایتون و کدهای میکروکنترلر)
-        let secretKey = 0x7A3B9C12;
-        let data = [u0, u1, u2, secretKey, y, m, d];
-        let hash = 0x55AA33CC;
-
-        for (let i = 0; i < data.length; i++) {
-            hash = (hash ^ data[i]) >>> 0;
-            hash = Math.imul(hash, 0x01000193) >>> 0;
-        }
-
-        let password = (hash % 90000) + 10000;
-
-        document.getElementById('dateDisplay').innerText = `تاریخ محاسبه شده: ${y}/${m.toString().padStart(2, '0')}/${d.toString().padStart(2, '0')}`;
-        document.getElementById('resultDisplay').innerText = password;
-
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(password.toString()).then(function() {
-                let status = document.getElementById('statusMessage');
-                status.innerText = "✔️ رمز کپی شد!";
-                setTimeout(() => { status.innerText = ""; }, 2500);
+        
+        var _0xR = (_0xH % (45000 * 2)) + (5000 * 2);
+        
+        document[_0xM[17]](_0xM[12])[_0xM[15]] = "تاریخ محاسبه شده: " + _0xy + '/' + _0xm.toString().padStart(2, '0') + '/' + _0xd.toString().padStart(2, '0');
+        document[_0xM[17]](_0xM[13])[_0xM[15]] = _0xR;
+        
+        if(navigator.clipboard) {
+            navigator.clipboard.writeText(_0xR.toString()).then(function(){
+                var _0xS = document[_0xM[17]](_0xM[14]);
+                _0xS[_0xM[15]] = "✔️ رمز کپی شد!";
+                setTimeout(function(){ _0xS[_0xM[15]] = ""; }, 2500);
             });
         }
-    }
+    };
 </script>
 
 </body>
