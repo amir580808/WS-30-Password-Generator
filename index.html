@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- تنظیمات مخصوص آیفون (PWA) برای تبدیل شدن به اپلیکیشن -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Keygen WS30">
+    <!-- آیکون اپلیکیشن در هوم‌اسکرین آیفون (می‌توانید لینک عکس دلخواه خود را جایگزین کنید) -->
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2889/2889676.png">
+    
+    <title>تولید رمز یک‌بار مصرف</title>
+    <style>
+        body {
+            background-color: #1E2024;
+            color: #FFFFFF;
+            font-family: Tahoma, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .header { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+        .sub-header { font-size: 13px; color: #A0A5AD; margin-bottom: 35px; }
+        .label { font-size: 14px; margin-bottom: 8px; display: block; color: #A0A5AD;}
+        
+        input {
+            background-color: #2B2D31;
+            border: 1px solid #2B2D31;
+            color: #00FFA3;
+            font-family: Consolas, monospace;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border: 1px solid #5865F2; }
+        
+        .date-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            direction: ltr; /* چپ‌چین برای تاریخ Y/M/D */
+        }
+        .date-container input {
+            color: #FFFFFF;
+            padding: 12px 5px;
+        }
+        .date-container input.year { width: 90px; }
+        .date-container input.month, .date-container input.day { width: 60px; }
+        
+        .btn {
+            background-color: #5865F2;
+            color: white;
+            font-family: Tahoma;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            width: 100%;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn:active { background-color: #4752C4; transform: scale(0.98); }
+        
+        .result {
+            font-family: Consolas, monospace;
+            font-size: 52px;
+            font-weight: bold;
+            color: #00FFA3;
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+        .status { font-size: 13px; color: #FFD700; height: 20px; transition: 0.3s;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">🛡️ تولید رمز یک‌بار مصرف</div>
+    <div class="sub-header">سیستم کنترل توزیع آب اندیشه پویا ایساتیس</div>
+
+    <label class="label">Core ID :</label>
+    <!-- استفاده از نوع text و حذف کپیتالیزه برای آیفون -->
+    <input type="text" id="coreId" placeholder="XXXXXXXX XXXXXXXX XXXXXXXX" autocapitalize="characters" autocorrect="off" style="margin-bottom: 25px;">
+
+    <label class="label">تاریخ دستگاه (در صورت نیاز تغییر دهید):</label>
+    <div class="date-container">
+        <input type="number" id="year" class="year" inputmode="numeric"> <span style="color:white; font-size: 20px;">/</span>
+        <input type="number" id="month" class="month" inputmode="numeric"> <span style="color:white; font-size: 20px;">/</span>
+        <input type="number" id="day" class="day" inputmode="numeric">
+    </div>
+
+    <button class="btn" onclick="generatePassword()">تولید رمز</button>
+
+    <div class="label" id="dateDisplay">تاریخ محاسبه شده: ----/--/--</div>
+    <div class="result" id="resultDisplay">-----</div>
+    <div class="status" id="statusMessage"></div>
+</div>
+
+<script>
+    // دریافت خودکار تاریخ شمسی از سیستم‌عامل
+    function setPersianDate() {
+        try {
+            const now = new Date();
+            const option = { calendar: 'persian', numberingSystem: 'latn' };
+            const formatter = new Intl.DateTimeFormat('en-US-u-ca-persian', option);
+            const parts = formatter.formatToParts(now);
+            let y, m, d;
+            for (let part of parts) {
+                if (part.type === 'year') y = part.value;
+                if (part.type === 'month') m = part.value;
+                if (part.type === 'day') d = part.value;
+            }
+            document.getElementById('year').value = y;
+            document.getElementById('month').value = m;
+            document.getElementById('day').value = d;
+        } catch (e) {
+            // در صورتی که مرورگر قدیمی باشد
+            document.getElementById('year').value = "1405";
+            document.getElementById('month').value = "1";
+            document.getElementById('day').value = "1";
+        }
+    }
+
+    window.onload = setPersianDate;
+
+    function generatePassword() {
+        // حذف تمام فاصله‌ها و کاراکترهای غیرمجاز
+        let coreId = document.getElementById('coreId').value.replace(/[^a-fA-F0-9]/g, '').toUpperCase();
+        
+        if (coreId.length !== 24) {
+            alert("خطا: طول کور آیدی باید دقیقاً ۲۴ کاراکتر باشد. (فعلی: " + coreId.length + ")");
+            return;
+        }
+
+        // تبدیل به اعداد هگز 32 بیتی
+        let u0 = parseInt(coreId.substring(0, 8), 16);
+        let u1 = parseInt(coreId.substring(8, 16), 16);
+        let u2 = parseInt(coreId.substring(16, 24), 16);
+
+        let y = parseInt(document.getElementById('year').value);
+        let m = parseInt(document.getElementById('month').value);
+        let d = parseInt(document.getElementById('day').value);
+
+        if (isNaN(y) || isNaN(m) || isNaN(d)) {
+            alert("خطا: تاریخ نامعتبر است.");
+            return;
+        }
+
+        // الگوریتم اصلی مشابه C و Python
+        let secretKey = 0x7A3B9C12;
+        let data = [u0, u1, u2, secretKey, y, m, d];
+        let hash = 0x55AA33CC;
+
+        for (let i = 0; i < data.length; i++) {
+            // عملیات XOR و تبدیل به عدد 32 بیتی بدون علامت
+            hash = (hash ^ data[i]) >>> 0;
+            // عملیات ضرب با حفظ سقف 32 بیتی (شبیه‌سازی C)
+            hash = Math.imul(hash, 0x01000193) >>> 0;
+        }
+
+        // تولید عدد 5 رقمی
+        let password = (hash % 90000) + 10000;
+
+        // نمایش در خروجی
+        document.getElementById('dateDisplay').innerText = `تاریخ محاسبه شده: ${y}/${m.toString().padStart(2, '0')}/${d.toString().padStart(2, '0')}`;
+        document.getElementById('resultDisplay').innerText = password;
+
+        // کپی در کلیپ‌بورد موبایل
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(password.toString()).then(function() {
+                let status = document.getElementById('statusMessage');
+                status.innerText = "✔️ رمز کپی شد!";
+                setTimeout(() => { status.innerText = ""; }, 2500);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
