@@ -117,6 +117,19 @@
 </div>
 
 <script>
+    // === قفل امنیتی ورود به برنامه ===
+    let appPassword = localStorage.getItem("app_login");
+    if(appPassword !== "1396") { 
+        let input = prompt("🔒 رمز ورود به نرم‌افزار را وارد کنید:");
+        if(input === "1396") {
+            localStorage.setItem("app_login", "1396");
+        } else {
+            document.body.innerHTML = "<h3 style='color:white; text-align:center; margin-top:50px;'>❌ دسترسی غیرمجاز</h3>";
+            throw new Error("Unauthorized"); // متوقف کردن اجرای بقیه کدها
+        }
+    }
+    // ==================================
+
     // دریافت خودکار تاریخ شمسی از سیستم‌عامل
     function setPersianDate() {
         try {
